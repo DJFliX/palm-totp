@@ -6,25 +6,15 @@
 #include "totp.h"
 #include "TOTPAlg.h"
 
-static int hmacKey [10];
+#define TOTP_CODE_LENGTH 6
 
-static char *int_to_string_helper(char *dest, char n, int x) {
-  if (n == 0) {
-    return NULL;
-  }
-  if (x <= -10) {
-    dest = int_to_string_helper(dest, n - 1, x / 10);
-    if (dest == NULL) return NULL;
-  }
-  *dest = (char) ('0' - x % 10);
-  return dest + 1;
-}
+static int hmacKey [10];
 
 DWord PilotMain (Word cmd, Ptr cmdPBP, Word launchFlags)
 {
   EventType event;
   long totpCode;
-  char totpStr[6];
+  char totpStr[TOTP_CODE_LENGTH];
 
   if (cmd == sysAppLaunchCmdNormalLaunch)
   {
@@ -40,8 +30,8 @@ DWord PilotMain (Word cmd, Ptr cmdPBP, Word launchFlags)
     hmacKey[9] = 0x72;
     TOTPAlg((int *)hmacKey, 10, 7200); 
     totpCode = getCodeFromTimestamp(1557414000);
-    int_to_string_helper(totpStr, 6, totpCode);
-    WinDrawChars(totpStr, 10, 55, 74 );
+    StrPrintF(totpStr, "%ld", totpCode);
+    WinDrawChars(totpStr, TOTP_CODE_LENGTH, 55, 74 );
     do {
       EvtGetEvent( &event, evtWaitForever);
 
