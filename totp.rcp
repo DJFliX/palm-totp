@@ -1,0 +1,10 @@
+// totp.rcp
+// Resources for Palm TOTP
+// Felix Mann
+// djflix@gmail.com
+
+#include "totp.h"
+
+ICON "totp.bmp"
+
+VERSION 1 "1.0.0"

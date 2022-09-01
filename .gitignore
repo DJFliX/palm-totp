@@ -1,0 +1,5 @@
+*.stamp
+*.grc
+*.bin
+*.o
+totp
