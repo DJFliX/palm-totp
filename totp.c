@@ -10,7 +10,7 @@
 #define TIMESTAMP_LENGTH 10
 #define PALM2UNIX(a)  (a - 2082844800)
 
-static int hmacKey [10];
+static char hmacKey [10];
 
 DWord PilotMain (Word cmd, Ptr cmdPBP, Word launchFlags)
 {
@@ -32,7 +32,7 @@ DWord PilotMain (Word cmd, Ptr cmdPBP, Word launchFlags)
     hmacKey[7] = 0x6f;
     hmacKey[8] = 0x6f;
     hmacKey[9] = 0x72;
-    TOTPAlg((int *)hmacKey, 10, 60);
+    TOTPAlg((char *)hmacKey, 10, 60);
     timestamp = PALM2UNIX(TimGetSeconds());
     totpCode = getCodeFromTimestamp(timestamp);
     StrPrintF(totpStr, "%ld", totpCode);

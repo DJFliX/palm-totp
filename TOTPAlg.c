@@ -1,12 +1,12 @@
 #include "TOTPAlg.h"
 #include "sha1.h"
 
-int* _hmacKey;
-int _keyLength;
+char* _hmacKey;
+char _keyLength;
 long _timeStep;
 
 // Init the library with the private key, its length and the timeStep duration
-void TOTPAlg(int* hmacKey, int keyLength, long timeStep) {
+void TOTPAlg(char* hmacKey, char keyLength, long timeStep) {
     _hmacKey = hmacKey;
     _keyLength = keyLength;
     _timeStep = timeStep;
@@ -21,20 +21,20 @@ long getCodeFromTimestamp(long timeStamp) {
 // Generate a code, using the number of steps provided
 long getCodeFromSteps(long steps) {
     // STEP 0, map the number of steps in a 8-bytes array (counter value)
-    int _byteArray[8];
-    int* _hash;
+    char _byteArray[8];
+    char* _hash;
     long _truncatedHash;
-    int _offset;
-    int j;
+    char _offset;
+    char j;
 
     _byteArray[0] = 0x00;
     _byteArray[1] = 0x00;
     _byteArray[2] = 0x00;
     _byteArray[3] = 0x00;
-    _byteArray[4] = (int)((steps >> 24) & 0xFF);
-    _byteArray[5] = (int)((steps >> 16) & 0xFF);
-    _byteArray[6] = (int)((steps >> 8) & 0XFF);
-    _byteArray[7] = (int)((steps & 0XFF));
+    _byteArray[4] = (char)((steps >> 24) & 0xFF);
+    _byteArray[5] = (char)((steps >> 16) & 0xFF);
+    _byteArray[6] = (char)((steps >> 8) & 0XFF);
+    _byteArray[7] = (char)((steps & 0XFF));
 
     // STEP 1, get the HMAC-SHA1 hash from counter and key
     initHmac(_hmacKey, _keyLength);
