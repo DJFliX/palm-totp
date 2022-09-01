@@ -4,7 +4,7 @@ https://github.com/Netthaw/TOTP-MCU
 
 ToDo for first "releasable" version:
 - [x] Find a TOTP library that will compile on Palm OS
-- [ ] Find out how to "get time" in Palm OS
+- [x] Find out how to "get time" in Palm OS
 - [x] Write/fix helper function to display totp code correctly
 - [ ] Change hardcoded hmac key to a input field in the main form
 - [ ] Add a refresh button
