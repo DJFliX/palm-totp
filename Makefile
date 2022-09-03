@@ -9,20 +9,12 @@ LD = m68k-palmos-gcc
 
 COMMON = -Wno-multichar -funsafe-math-optimizations -Os -m68000 -mno-align-int -mpcrel -fpic -fshort-enums -mshort
 
-#uncomment this if you want to build a gdb debuggable version
-#DEFINES = -DDEBUG
-#INCLUDES			+=	-isystem$(SDK)/
 INCLUDES			+=	-isystem$(SDK)/Core
-INCLUDES            +=  -isystem$(SDK)/Core/International
-INCLUDES			+=	-isystem$(SDK)/Core/Hardware
 INCLUDES			+=	-isystem$(SDK)/Core/System
 INCLUDES			+=	-isystem$(SDK)/Core/UI
-# INCLUDES			+=	-isystem$(SDK)/Dynamic
-# INCLUDES			+=	-isystem$(SDK)/Libraries
-# INCLUDES			+=	-isystem$(SDK)/Libraries/PalmOSGlue
 
 CSFLAGS = -O2 -S $(INCLUDES)
-CFLAGS = -O2 -palmos3.1 -g $(INCLUDES)
+CFLAGS = -O2 -palmos4 -g $(INCLUDES)
 
 OBJRES = m68k-palmos-obj-res
 BUILDPRC = build-prc

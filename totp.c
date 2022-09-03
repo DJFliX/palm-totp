@@ -1,7 +1,8 @@
-#include <Common.h>
-#include <System/SysAll.h>
+#include <System/SystemMgr.h>
+#include <System/StringMgr.h>
+#include <System/Preferences.h>
+#include <System/TimeMgr.h>
 #include <SysEvtMgr.h>
-#include <UI/UIAll.h>
 
 #include "totp.h"
 #include "TOTPAlg.h"
@@ -12,13 +13,16 @@
 
 static char hmacKey [10];
 
-DWord PilotMain (Word cmd, Ptr cmdPBP, Word launchFlags)
+UInt32 PilotMain (UInt16 cmd, void *cmdPBP, UInt16 launchFlags)
 {
   EventType event;
   long totpCode;
   long timestamp;
   char totpStr[TOTP_CODE_LENGTH];
   char timestampStr[TIMESTAMP_LENGTH];
+  long timeZone = PrefGetPreference(prefTimeZone);
+  long daylightSavingAdjustment = PrefGetPreference(prefDaylightSavingAdjustment);
+  UInt32 utcTime = TimTimeZoneToUTC(TimGetSeconds(), timeZone, daylightSavingAdjustment);
 
   if (cmd == sysAppLaunchCmdNormalLaunch)
   {
@@ -33,7 +37,9 @@ DWord PilotMain (Word cmd, Ptr cmdPBP, Word launchFlags)
     hmacKey[8] = 0x6f;
     hmacKey[9] = 0x72;
     TOTPAlg((char *)hmacKey, 10, 60);
-    timestamp = PALM2UNIX(TimGetSeconds());
+
+
+    timestamp = PALM2UNIX(utcTime);
     totpCode = getCodeFromTimestamp(timestamp);
     StrPrintF(totpStr, "%ld", totpCode);
     StrPrintF(timestampStr, "%ld", timestamp);
