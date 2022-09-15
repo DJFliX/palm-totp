@@ -37,22 +37,19 @@ static FieldPtr SetFieldTextFromHandle(UInt8 fieldID, MemHandle txtH)
 {
   MemHandle oldTxtH;
   FormPtr frm = FrmGetActiveForm();
-  FieldPtr fldP;
-
-  // get the field and the field's current text handle.
-  fldP = FrmGetObjectPtr(frm, FrmGetObjectIndex(frm, fieldID));
-  ErrNonFatalDisplayIf(!fldP, "missing field");
-  oldTxtH = FldGetTextHandle(fldP);
+  FieldPtr fp = FrmGetObjectPtr(frm, FrmGetObjectIndex(frm, fieldID));
+  ErrNonFatalDisplayIf(!fp, "missing field");
+  oldTxtH = FldGetTextHandle(fp);
 
   // set the field's text to the new text.
-  FldSetTextHandle(fldP, txtH);
-  FldDrawField(fldP);
+  FldSetTextHandle(fp, txtH);
+  FldDrawField(fp);
 
   // free the handle AFTER we call FldSetTextHandle().
   if (oldTxtH)
     MemHandleFree(oldTxtH);
 
-  return fldP;
+  return fp;
 }
 
 // https://lspo.feri.um.si/teachware/internal/programming/palmos_programming/ch05.htm#P1127_56204
@@ -94,6 +91,7 @@ static void CreateAccountFlow()
   FrmSetFocus(form, FrmGetObjectIndex(form, NewAccountSecretField));
   FldSetSelection(totpSecretField, 0, FldGetTextLength(totpSecretField));
 
+  FrmSetEventHandler(frm, DialogNewGameHandleEvent);
   hitButton = FrmDoDialog(form);
 
   if (hitButton == NewAccountOkButton)
@@ -122,7 +120,8 @@ Boolean appHandleEvent(EventPtr event)
     switch (event->data.menu.itemID)
     {
     case MainMenuAccountNew:
-      FrmGotoForm(NewAccountForm);
+      // FrmGotoForm(NewAccountForm);
+      CreateAccountFlow();
       break;
     default:
       FrmAlert(FeatureNotImplemented);
