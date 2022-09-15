@@ -5,6 +5,45 @@
 
 #include "totp.h"
 
+MENU ID MainMenu
+BEGIN
+  PULLDOWN "Account"
+  BEGIN
+    MENUITEM "New" ID MainMenuAccountNew "N"
+  END
+  PULLDOWN "Help"
+  BEGIN
+    MENUITEM "About" ID MainMenuHelpAbout "A"
+  END
+END
+
+FORM ID MainForm AT (2 2 156 156)
+MENUID MainMenu
+BEGIN
+  TITLE "Palm TOTP"
+  BUTTON "Derp" ID 1234 AT (CENTER 140 AUTO AUTO)
+END
+
+FORM ID NewAccountForm AT (2 2 156 156)
+BEGIN
+  TITLE "New account"
+  LABEL "Description" ID 3099 AT (FormPaddingLeft 30) FONT 0
+  FIELD ID NewAccountNameField AT (60 30 90 13) RIGHTALIGN SINGLELINE MAXCHARS 24 FONT 0 UNDERLINED
+  LABEL "TOTP Secret" ID 3098 AT (FormPaddingLeft 42) FONT 0
+  FIELD ID NewAccountSecretField AT (60 42 90 13) RIGHTALIGN SINGLELINE MAXCHARS 24 FONT 0 UNDERLINED
+  GRAFFITISTATEINDICATOR AT (140 140)
+  BUTTON "OK" ID NewAccountOkButton AT (7 130 36 12) LEFTANCHOR FRAME FONT 0
+  BUTTON "Cancel" ID NewAccountCancelButton AT (49 130 36 12) LEFTANCHOR FRAME FONT 0
+END
+
+ALERT FeatureNotImplemented
+ERROR
+BEGIN
+	TITLE "Not Implemented"
+	MESSAGE "This feature is not ready yet."
+	BUTTONS "Ok"
+END
+
 ICON "totp.bmp"
 
 VERSION 1 "1.0.0"
