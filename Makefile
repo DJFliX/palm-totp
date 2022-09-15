@@ -1,6 +1,6 @@
-OBJS = totp.o TOTPAlg.o sha1.o
+OBJS = totp.o lib/TOTPAlg.o lib/sha1.o
 TOOLCHAIN ?= /opt/palmdev/buildtools/toolchain/bin
-SDK     = /opt/palmdev/buildtools/palm-os-sdk-master/sdk-3.1/include
+SDK     = /opt/palmdev/buildtools/palm-os-sdk-master/sdk-4/include
 PILRC = /opt/palmdev/buildtools/pilrc3_3_unofficial/bin/pilrc
 
 CC = m68k-palmos-gcc
@@ -25,29 +25,20 @@ PRC = totp.prc
 
 all: $(PRC)
 
-.S.o:
-	$(CC) $(TARGETFLAGS) -c $<
-
-.c.s:
-	$(CC) $(CSFLAGS) $<
-
 $(PRC): code.stamp bin.stamp
-	$(BUILDPRC) $@ $(ICONTEXT) $(APPID) *.grc *.bin
+	$(BUILDPRC) bin/$@ $(ICONTEXT) $(APPID) bin/*.grc bin/*.bin
 
 code.stamp: totp
-	$(OBJRES) totp
+	(cd bin && $(OBJRES) totp)
 	touch code.stamp
 
 bin.stamp: totp.rcp
-	$(PILRC) totp.rcp
+	$(PILRC) totp.rcp bin
 	touch bin.stamp
 
 totp: $(OBJS)
-	$(CC) $(CFLAGS) $(OBJS) -o $@
-
-fullclean:
-	rm -rf *.[oa] totp *.bin *.stamp *.grc totp.prc
+	mkdir -p bin
+	$(CC) $(CFLAGS) $(OBJS) -o bin/$@
 
 clean:
-	rm -rf *.[oa] totp *.bin *.stamp *.grc
-
+	rm -rf *.[oa] totp *.bin *.stamp *.grc lib/*.[oa] bin

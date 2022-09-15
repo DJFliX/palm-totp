@@ -1,6 +1,1 @@
-*.stamp
-*.grc
-*.bin
-*.o
-totp
-*.prc
+bin
