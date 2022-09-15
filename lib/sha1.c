@@ -78,9 +78,9 @@ void write(UInt8 data) {
 }
 
 void writeArray(UInt8 *buffer, UInt8 size){
-    while (size--) {
-        write(*buffer++);
-    }
+  while (size--) {
+      write(*buffer++);
+  }
 }
 
 void pad() {

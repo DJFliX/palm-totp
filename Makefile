@@ -1,7 +1,8 @@
 OBJS = totp.o lib/TOTPAlg.o lib/sha1.o
-TOOLCHAIN ?= /opt/palmdev/buildtools/toolchain/bin
-SDK     = /opt/palmdev/buildtools/palm-os-sdk-master/sdk-4/include
-PILRC = /opt/palmdev/buildtools/pilrc3_3_unofficial/bin/pilrc
+PALMDEV_ROOT = /opt/palmdev/buildtools
+TOOLCHAIN ?= $(PALMDEV_ROOT)/toolchain/bin
+SDK     = $(PALMDEV_ROOT)/palm-os-sdk-master/sdk-4/include
+PILRC = $(PALMDEV_ROOT)/pilrc3_3_unofficial/bin/pilrc
 
 CC = m68k-palmos-gcc
 LKR	= linker.lkr

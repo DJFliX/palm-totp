@@ -46,8 +46,8 @@ UInt32 getCodeFromSteps(UInt32 steps) {
   _offset = _hash[20 - 1] & 0xF;
 
   for (j = 0; j < 4; ++j) {
-      _truncatedHash <<= 8;
-      _truncatedHash  |= _hash[_offset + j];
+    _truncatedHash <<= 8;
+    _truncatedHash  |= _hash[_offset + j];
   }
 
   // STEP 3, compute the OTP value
