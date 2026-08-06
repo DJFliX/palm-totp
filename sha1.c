@@ -111,10 +111,10 @@ char* result(void) {
   for (i=0; i<5; i++) {
     long a,b;
     a=state.w[i];
-    b=a<<24;
-    b|=(a<<8) & 0x00ff0000;
-    b|=(a>>8) & 0x0000ff00;
-    b|=a>>24;
+    b=(a >> 24) & 0x000000ff;
+    b|=(a >> 16) & 0x0000ff00;
+    b|=(a << 16) & 0x00ff0000;
+    b|=(a << 24) & 0xff000000;
     state.w[i]=b;
   }
 
