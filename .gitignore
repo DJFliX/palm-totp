@@ -4,3 +4,4 @@
 *.o
 totp
 *.prc
+.DS_Store

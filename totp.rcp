@@ -5,6 +5,6 @@
 
 #include "totp.h"
 
-ICON "totp.bmp"
-
+ICON "totp_logo.bmp"
+APPLICATION ID 1 "TOTP"
 VERSION 1 "1.0.0"
