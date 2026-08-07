@@ -4,7 +4,11 @@
 // djflix@gmail.com
 
 #include "totp.h"
-
-ICON "totp_logo.bmp"
+ICONFAMILYEX
+BEGIN
+    BITMAP "images/icon_1bpp_22x22.bmp" BPP 1
+    BITMAP "images/icon_8bpp_22x22.bmp" BPP 8 TRANSPARENT 23 21 46 COMPRESS DENSITY 1
+    BITMAP "images/icon_8bpp_44x44.bmp" BPP 8 TRANSPARENT 23 21 46 COMPRESS DENSITY 2
+END
 APPLICATION ID 1 "TOTP"
 VERSION 1 "1.0.0"

@@ -28,7 +28,8 @@ PRC_INCLUDE = $(TOOLCHAIN_DIR)/share/prc-tools/include
 
 # Compiler and tools
 CC = $(TOOLCHAIN_DIR)/bin/m68k-palmos-gcc
-CFLAGS = -palmos4 -nostdinc -O2 -Wall -I$(PRC_INCLUDE) \
+COMMON = -Wno-multichar -m68000 -mno-align-int -mpcrel -fpic -fshort-enums -mshort
+CFLAGS = $(COMMON) -palmos4 -nostdinc -O2 -Wall -I$(PRC_INCLUDE) \
 	-I$(COMPILER_INCLUDE) \
 	-I$(SDK)/Core -I$(SDK)/Core/System -I$(SDK)/Core/UI
 PILRC = pilrc
