@@ -1,23 +1,22 @@
+#ifndef SHA1_H
+#define SHA1_H
+
 #define HASH_LENGTH 20
 #define BLOCK_LENGTH 64
 
-union _buffer {
-  char b[BLOCK_LENGTH];
-  long w[BLOCK_LENGTH/4];
-} buffer;
-union _state {
-  char b[HASH_LENGTH];
-  long w[HASH_LENGTH/4];
-} state;
-
-char bufferOffset;
-long byteCount;
-char keyBuffer[BLOCK_LENGTH];
-char innerHash[HASH_LENGTH];
+// SHA-1 words must be exactly 32 bits. The m68k Palm has 32-bit 'long' but
+// 16-bit 'int'; hosted 64-bit toolchains have 64-bit 'long'. Pick per target.
+#if defined(__m68k__) || defined(__MC68K__)
+typedef unsigned long sha_u32;
+#else
+typedef unsigned int sha_u32;
+#endif
 
 void init(void);
-void initHmac(const char* secret, char secretLength);
+void initHmac(const char* key, char keyLength);
 char* result(void);
 char* resultHmac(void);
-void write(char);
-void writeArray(char *buffer, char size);
+void write(char data);
+void writeArray(char *data, char size);
+
+#endif

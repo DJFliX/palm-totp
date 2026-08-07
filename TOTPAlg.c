@@ -47,7 +47,7 @@ long getCodeFromSteps(long steps) {
 
     for (j = 0; j < 4; ++j) {
         _truncatedHash <<= 8;
-        _truncatedHash  |= _hash[_offset + j];
+        _truncatedHash  |= (_hash[_offset + j] & 0xFF);  // mask: char is signed
     }
 
     // STEP 3, compute the OTP value

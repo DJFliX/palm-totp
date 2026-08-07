@@ -18,8 +18,8 @@ UInt32 PilotMain (UInt16 cmd, void *cmdPBP, UInt16 launchFlags)
   EventType event;
   long totpCode;
   long timestamp;
-  char totpStr[TOTP_CODE_LENGTH];
-  char timestampStr[TIMESTAMP_LENGTH];
+  char totpStr[TOTP_CODE_LENGTH + 1];
+  char timestampStr[TIMESTAMP_LENGTH + 1];
   long timeZone = PrefGetPreference(prefTimeZone);
   long daylightSavingAdjustment = PrefGetPreference(prefDaylightSavingAdjustment);
   UInt32 utcTime = TimTimeZoneToUTC(TimGetSeconds(), timeZone, daylightSavingAdjustment);
@@ -36,17 +36,32 @@ UInt32 PilotMain (UInt16 cmd, void *cmdPBP, UInt16 launchFlags)
     hmacKey[7] = 0x6f;
     hmacKey[8] = 0x6f;
     hmacKey[9] = 0x72;
-    TOTPAlg((char *)hmacKey, 10, 60);
-
+    TOTPAlg((char *)hmacKey, 10, 30);
 
     timestamp = PALM2UNIX(utcTime);
     totpCode = getCodeFromTimestamp(timestamp);
-    StrPrintF(totpStr, "%ld", totpCode);
+
+    // Palm OS StrVPrintF supports only %d/%i/%u/%x/%s/%c with the +, -, *,
+    // h and l modifiers and a space-padded field width. There is no '0'
+    // zero-padding flag, so %06ld never worked. Format with %ld and pad to
+    // TOTP_CODE_LENGTH digits manually. Format timestampStr first so that
+    // nothing can overwrite totpStr.
     StrPrintF(timestampStr, "%ld", timestamp);
-    WinDrawChars(totpStr, TOTP_CODE_LENGTH, 55, 90);
+    StrPrintF(totpStr, "%ld", totpCode);
+    {
+      UInt16 codeLen = StrLen(totpStr);
+      UInt16 pad = TOTP_CODE_LENGTH - codeLen;
+      Int16 i;
+      for (i = codeLen; i >= 0; i--)
+        totpStr[i + pad] = totpStr[i];
+      for (i = 0; i < pad; i++)
+        totpStr[i] = '0';
+    }
+    WinDrawChars(totpStr, StrLen(totpStr), 70, 90);
     WinDrawChars("OTP:", 4, 32, 90);
-    WinDrawChars(timestampStr, TIMESTAMP_LENGTH, 55, 74);
+    WinDrawChars(timestampStr, StrLen(timestampStr), 70, 74);
     WinDrawChars("NOW:", 4, 32, 74);
+    WinDrawChars("VER: 1", 6, 32, 48);
     do {
       EvtGetEvent( &event, evtWaitForever);
 
